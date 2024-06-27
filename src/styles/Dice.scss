@@ -1,0 +1,18 @@
+.dice-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.die {
+    width: 50px;
+    height: 50px;
+    margin: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 20px;
+}
