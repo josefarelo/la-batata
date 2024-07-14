@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/ScoreBoard.scss';
 
 const ScoreBoard = ({ players, scores }) => {
+    
     return (
         <div className="scoreboard">
         <h3>Tabla de Puntuaciones</h3>

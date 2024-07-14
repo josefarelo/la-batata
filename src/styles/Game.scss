@@ -2,4 +2,116 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 20px;
+}
+
+.dice-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.roll-button {
+    width: 120px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s, background-color 0.2s;
+    background-color: #fff;
+    color: #000;
+}
+
+.roll-button:hover {
+    background-color: #f0f0f0;
+}
+
+.roll-button:active {
+    transform: scale(0.95);
+}
+/* Responsive Design */
+
+@media (max-width: 320px) {
+    .game {
+        gap: 10px;
+    }
+
+    .dice-container {
+        gap: 5px;
+    }
+
+    .roll-button {
+        width: 100px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .game {
+        gap: 15px;
+    }
+
+    .dice-container {
+        gap: 8px;
+    }
+
+    .roll-button {
+        width: 110px;
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 854px) {
+    .game {
+        gap: 20px;
+    }
+
+    .dice-container {
+        gap: 10px;
+    }
+
+    .roll-button {
+        width: 120px;
+        height: 50px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 855px) and (max-width: 1280px) {
+    .game {
+        gap: 25px;
+    }
+
+    .dice-container {
+        gap: 15px;
+    }
+
+    .roll-button {
+        width: 130px;
+        height: 55px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 1281px) and (max-width: 1920px) {
+    .game {
+        gap: 30px;
+    }
+
+    .dice-container {
+        gap: 20px;
+    }
+
+    .roll-button {
+        width: 140px;
+        height: 60px;
+        font-size: 1.3rem;
+    }
 }
