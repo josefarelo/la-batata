@@ -32,6 +32,7 @@ const Game = () => {
         // Verificar reglas de puntaje según las combinaciones de dados
         switch (newDiceValues.length) {
             // Cada Case depende de la cantidad de dados tirados
+
             case 6:
                 // 6 dados iguales
                 if (count[0] === 6) { // Seis dados de 1
@@ -143,20 +144,20 @@ const Game = () => {
                 }
 
                 // Escalera
-                const ladder1 = count[0] >= 1 && count[1] >= 1 && count[2] >= 1 && count[3] >= 1 && count[4] >= 1;
-                const ladder2 = count[1] >= 1 && count[2] >= 1 && count[3] >= 1 && count[4] >= 1 && count[5] >= 1;
-                const ladder3 = count[0] === 1 && count[1] === 1 && count[2] === 1 && count[3] === 1 && count[4] === 1 && count[5] === 1;
+                const sixDiceladder1 = count[0] >= 1 && count[1] >= 1 && count[2] >= 1 && count[3] >= 1 && count[4] >= 1;
+                const sixDiceladder2 = count[1] >= 1 && count[2] >= 1 && count[3] >= 1 && count[4] >= 1 && count[5] >= 1;
+                const sixDiceladder3 = count[0] === 1 && count[1] === 1 && count[2] === 1 && count[3] === 1 && count[4] === 1 && count[5] === 1;
 
-                if (ladder3) { // 1, 2, 3, 4, 5, 6
+                if (sixDiceladder3) { // 1, 2, 3, 4, 5, 6
                     newRollScore += 2000;
                     break;    
-                } else if (ladder1 && count[0] === 2) { // 1, 2, 3, 4, 5 y 1
+                } else if (sixDiceladder1 && count[0] === 2) { // 1, 2, 3, 4, 5 y 1
                     newRollScore += 1600;
                     break;
-                } else if ((ladder1 && count[4] === 2) || (ladder2 && count[4] === 2)) { // 1, 2, 3, 4, 5 y 5  o  2, 3, 4, 5, 6 y 5
+                } else if ((sixDiceladder1 && count[4] === 2) || (sixDiceladder2 && count[4] === 2)) { // 1, 2, 3, 4, 5 y 5  o  2, 3, 4, 5, 6 y 5
                     newRollScore += 1550;
                     break;
-                } else if ((ladder1) || (ladder2)) { // 1, 2, 3, 4, 5  o  2, 3, 4, 5, 6
+                } else if ((sixDiceladder1) || (sixDiceladder2)) { // 1, 2, 3, 4, 5  o  2, 3, 4, 5, 6
                     newRollScore += 1500;
                     break;
                 }
@@ -174,37 +175,226 @@ const Game = () => {
                 }
 
                 // 3 dados iguales
-                let someDice = false;
+                let sixDiceThreeEq = false;
                 for (let i = 0; i < 6; i++) {
                     if (i !== 0 && i !== 4 && count[i] === 3) { // Tres dados de 2, 3, 4 o 6
                         newRollScore += (i + 1) * 100;
-                        someDice = true;
+                        sixDiceThreeEq = true;
                     } else if (i === 0 && count[i] === 3) { // Tres dados de 1
                         newRollScore += 1000;
-                        someDice = true;
+                        sixDiceThreeEq = true;
                     } else if (i === 4 && count[i] === 3) { // Tres dados de 5
                         newRollScore += 500;
-                        someDice = true;
+                        sixDiceThreeEq = true;
+                    }
+                // Dados 1 y 5    
+                    if (i === 0 && count[i] === 2) { // Dos dados de 1
+                        newRollScore += 200;
+                        sixDiceThreeEq = true;
+                    } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
+                        newRollScore += 100;
+                        sixDiceThreeEq = true;
+                    } else if (i === 4 && count[i] === 1) { // Un dado de 5
+                        newRollScore += 50;
+                        sixDiceThreeEq = true;
+                    }
+                }
+                if (sixDiceThreeEq) {
+                    break;
+                }
+            
+            case 5:
+                // 5 dados iguales
+                if (count[0] === 5) { // Cinco dados de 1
+                    newRollScore += 5000;
+                    break;
+                } else if (count[4] === 5) { // Cinco dados de 5
+                    newRollScore += 2500;
+                    break;
+                } else {
+                    let foundFiveDice = false;
+                    for (let i = 1; i < 6; i++) {
+                        if (i !== 4 && count[i] === 5) { // Cinco dados de 2, 3, 4 o 6
+                            newRollScore += (i + 1) * 500;
+                            foundFiveDice = true;
+                            break;
+                        }
+                    }
+                    if (foundFiveDice) {
+                        break;
+                    }
+                }
+
+                // 4 dados iguales
+                if (count[0] === 4 && count[4] === 1) { // Cuatro dados de 1 y un dado de 5
+                    newRollScore += 4050;
+                    break;
+                } else if (count[0] === 4) { // Cuatro dados de 1
+                    newRollScore += 4000;
+                    break;
+                } else if (count[4] === 4 && count[0] === 1) { // Cuatro dados de 5 y un dado de 1
+                    newRollScore += 2100;
+                    break;
+                } else if (count[4] === 4) { // Cuatro dados de 5
+                    newRollScore += 2000;
+                    break;
+                } else {
+                    let foundFourDice = false;
+                    for (let i = 1; i < 6; i++) {
+                        if (i !== 4 && count[i] === 4 && count[0] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 1
+                            newRollScore += (i + 1) * 400 + 100;
+                            foundFourDice = true;
+                            break;
+                        } else if (i !== 4 && count[i] === 4 && count[4] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 5
+                            newRollScore += (i + 1) * 400 + 50;
+                            foundFourDice = true;
+                            break;
+                        } else if (i !== 4 && count[i] === 4) { // Cuatro dados de 2, 3, 4 o 6
+                            newRollScore += (i + 1) * 400;
+                            foundFourDice = true;
+                            break;
+                        }
+                    }
+                    if (foundFourDice) {
+                        break;
+                    }
+                }
+
+                // Escalera
+                const fiveDiceladder1 = count[0] >= 1 && count[1] >= 1 && count[2] >= 1 && count[3] >= 1 && count[4] >= 1;
+                const fiveDiceladder2 = count[1] >= 1 && count[2] >= 1 && count[3] >= 1 && count[4] >= 1 && count[5] >= 1;
+
+                if ((fiveDiceladder1) || (fiveDiceladder2)) { // 1, 2, 3, 4, 5  o  2, 3, 4, 5, 6
+                    newRollScore += 1500;
+                    break;
+                }
+
+                // 3 dados iguales
+                let fiveDiceThreeEq = false;
+                for (let i = 0; i < 6; i++) {
+                    if (i !== 0 && i !== 4 && count[i] === 3) { // Tres dados de 2, 3, 4 o 6
+                        newRollScore += (i + 1) * 100;
+                        fiveDiceThreeEq = true;
+                    } else if (i === 0 && count[i] === 3) { // Tres dados de 1
+                        newRollScore += 1000;
+                        fiveDiceThreeEq = true;
+                    } else if (i === 4 && count[i] === 3) { // Tres dados de 5
+                        newRollScore += 500;
+                        fiveDiceThreeEq = true;
                     }
 
                     if (i === 0 && count[i] === 2) { // Dos dados de 1
                         newRollScore += 200;
-                        someDice = true;
+                        fiveDiceThreeEq = true;
                     } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
                         newRollScore += 100;
-                        someDice = true;
+                        fiveDiceThreeEq = true;
                     } else if (i === 4 && count[i] === 1) { // Un dado de 5
                         newRollScore += 50;
-                        someDice = true;
+                        fiveDiceThreeEq = true;
                     }
                 }
-                if (someDice) {
+                if (fiveDiceThreeEq) {
+                    break;
+                }
+
+            case 4:
+                // 3 dados iguales
+                let fourDiceThreeEq = false;
+                for (let i = 0; i < 6; i++) {
+                    if (i !== 0 && i !== 4 && count[i] === 3) { // Tres dados de 2, 3, 4 o 6
+                        newRollScore += (i + 1) * 100;
+                        fourDiceThreeEq = true;
+                    } else if (i === 0 && count[i] === 3) { // Tres dados de 1
+                        newRollScore += 1000;
+                        fourDiceThreeEq = true;
+                    } else if (i === 4 && count[i] === 3) { // Tres dados de 5
+                        newRollScore += 500;
+                        fourDiceThreeEq = true;
+                    }
+
+                    if (i === 0 && count[i] === 2) { // Dos dados de 1
+                        newRollScore += 200;
+                        fourDiceThreeEq = true;
+                    } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
+                        newRollScore += 100;
+                        fourDiceThreeEq = true;
+                    } else if (i === 4 && count[i] === 1) { // Un dado de 5
+                        newRollScore += 50;
+                        fourDiceThreeEq = true;
+                    }
+                }
+                if (fourDiceThreeEq) {
+                    break;
+                }
+
+            case 3:
+                // 3 dados iguales
+                let threeDiceThreeEq = false;
+                for (let i = 0; i < 6; i++) {
+                    if (i !== 0 && i !== 4 && count[i] === 3) { // Tres dados de 2, 3, 4 o 6
+                        newRollScore += (i + 1) * 100;
+                        threeDiceThreeEq = true;
+                    } else if (i === 0 && count[i] === 3) { // Tres dados de 1
+                        newRollScore += 1000;
+                        threeDiceThreeEq = true;
+                    } else if (i === 4 && count[i] === 3) { // Tres dados de 5
+                        newRollScore += 500;
+                        threeDiceThreeEq = true;
+                    }
+
+                    if (i === 0 && count[i] === 2) { // Dos dados de 1
+                        newRollScore += 200;
+                        threeDiceThreeEq = true;
+                    } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
+                        newRollScore += 100;
+                        threeDiceThreeEq = true;
+                    } else if (i === 4 && count[i] === 1) { // Un dado de 5
+                        newRollScore += 50;
+                        threeDiceThreeEq = true;
+                    }
+                }
+                if (threeDiceThreeEq) {
+                    break;
+                }
+
+            case 2:
+                // 2 dados iguales
+                let twoDiceTh = false;
+                for (let i = 0; i < 6; i++) {
+                    if (i === 0 && count[i] === 2) { // Dos dados de 1
+                        newRollScore += 200;
+                        twoDiceTh = true;
+                    } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
+                        newRollScore += 100;
+                        twoDiceTh = true;
+                    } else if (i === 4 && count[i] === 1) { // Un dado de 5
+                        newRollScore += 50;
+                        twoDiceTh = true;
+                    }
+                }
+                if (twoDiceTh) {
+                    break;
+                }
+
+            case 1:
+                // 1 dado
+                let oneDiceTh = false;
+                if (newDiceValues.length === 1) {
+                    if (count[0] === 1) {
+                        newRollScore += 100;
+                        oneDiceTh = true;
+                    } else if (count[4] === 1) {
+                        newRollScore += 50;
+                        oneDiceTh = true;
+                    }
+                }
+                if (oneDiceTh) {
                     break;
                 }
 
             default: 
                 newRollScore += 0;
-                console.log("default");
                 break;
         }
 
