@@ -8,7 +8,7 @@ const Game = () => {
     const [rollScore, setRollScore] = useState(0);
     const [diceValues, setDiceValues] = useState([1, 1, 1, 1, 1, 1]);
 
-    const rollDice = () => {
+    const rollDice = () => { // Tirar los dados
         setRoll(roll + 1);
 
         // Generar números aleatorios para cada dado
@@ -57,30 +57,30 @@ const Game = () => {
 
                 // 5 dados iguales
                 if (count[0] === 5 && count[4] === 1) { // Cinco dados de 1 y un dado de 5
-                    newRollScore += 5050;
+                    newRollScore += 4050;
                     break;
                 } else if (count[0] === 5) { // Cinco dados de 1
-                    newRollScore += 5000;
+                    newRollScore += 4000;
                     break;
                 } else if (count[4] === 5 && count[0] === 1) { // Cinco dados de 5 y un dado de 1
-                    newRollScore += 2600;
+                    newRollScore += 2100;
                     break;
                 } else if (count[4] === 5) { // Cinco dados de 5
-                    newRollScore += 2500;
+                    newRollScore += 2000;
                     break;
                 } else {
                     let foundFiveDice = false;
                     for (let i = 1; i < 6; i++) {
                         if (i !== 4 && count[i] === 5 && count[0] === 1) { // Cinco dados de 2, 3, 4 o 6 y un dado de 1
-                            newRollScore += (i + 1) * 500 + 100;
+                            newRollScore += (i + 1) * 400 + 100;
                             foundFiveDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 5 && count[4] === 1) { // Cinco dados de 2, 3, 4 o 6 y un dado de 5
-                            newRollScore += (i + 1) * 500 + 50;
+                            newRollScore += (i + 1) * 400 + 50;
                             foundFiveDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 5) { // Cinco dados de 2, 3, 4 o 6
-                            newRollScore += (i + 1) * 500;
+                            newRollScore += (i + 1) * 400;
                             foundFiveDice = true;
                             break;
                         }
@@ -92,48 +92,48 @@ const Game = () => {
 
                 // 4 dados iguales
                 if (count[0] === 4 && count[4] === 2) { // Cuatro dados de 1 y dos dados de 5
-                    newRollScore += 4100;
-                    break;
-                } else if (count[0] === 4 && count[4] === 1) { // Cuatro dados de 1 y un dado de 5
-                    newRollScore += 4050;
-                    break;
-                } else if (count[0] === 4) { // Cuatro dados de 1
-                    newRollScore += 4000;
-                    break;
-                } else if (count[4] === 4 && count[0] === 2) { // Cuatro dados de 5 y dos dados de 1
-                    newRollScore += 2200;
-                    break;
-                } else if (count[4] === 4 && count[0] === 1) { // Cuatro dados de 5 y un dado de 1
                     newRollScore += 2100;
                     break;
-                } else if (count[4] === 4) { // Cuatro dados de 5
+                } else if (count[0] === 4 && count[4] === 1) { // Cuatro dados de 1 y un dado de 5
+                    newRollScore += 2050;
+                    break;
+                } else if (count[0] === 4) { // Cuatro dados de 1
                     newRollScore += 2000;
+                    break;
+                } else if (count[4] === 4 && count[0] === 2) { // Cuatro dados de 5 y dos dados de 1
+                    newRollScore += 1200;
+                    break;
+                } else if (count[4] === 4 && count[0] === 1) { // Cuatro dados de 5 y un dado de 1
+                    newRollScore += 1100;
+                    break;
+                } else if (count[4] === 4) { // Cuatro dados de 5
+                    newRollScore += 1000;
                     break;
                 } else {
                     let foundFourDice = false;
                     for (let i = 1; i < 6; i++) {
                         if (i !== 4 && count[i] === 4 && count[0] === 2) { // Cuatro dados de 2, 3, 4 o 6 y dos dados de 1
-                            newRollScore += (i + 1) * 400 + 200;
+                            newRollScore += (i + 1) * 200 + 200;
                             foundFourDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 4 && count[4] === 2) { // Cuatro dados de 2, 3, 4 o 6 y dos dados de 5
-                            newRollScore += (i + 1) * 400 + 100;
+                            newRollScore += (i + 1) * 200 + 100;
                             foundFourDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 4 && count[0] === 1 && count[4] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 1 y un dado de 5
-                            newRollScore += (i + 1) * 400 + 150;
+                            newRollScore += (i + 1) * 200 + 150;
                             foundFourDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 4 && count[0] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 1
-                            newRollScore += (i + 1) * 400 + 100;
+                            newRollScore += (i + 1) * 200 + 100;
                             foundFourDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 4 && count[4] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 5
-                            newRollScore += (i + 1) * 400 + 50;
+                            newRollScore += (i + 1) * 200 + 50;
                             foundFourDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 4) { // Cuatro dados de 2, 3, 4 o 6
-                            newRollScore += (i + 1) * 400;
+                            newRollScore += (i + 1) * 200;
                             foundFourDice = true;
                             break;
                         }
@@ -206,16 +206,16 @@ const Game = () => {
             case 5:
                 // 5 dados iguales
                 if (count[0] === 5) { // Cinco dados de 1
-                    newRollScore += 5000;
+                    newRollScore += 4000;
                     break;
                 } else if (count[4] === 5) { // Cinco dados de 5
-                    newRollScore += 2500;
+                    newRollScore += 2000;
                     break;
                 } else {
                     let foundFiveDice = false;
                     for (let i = 1; i < 6; i++) {
                         if (i !== 4 && count[i] === 5) { // Cinco dados de 2, 3, 4 o 6
-                            newRollScore += (i + 1) * 500;
+                            newRollScore += (i + 1) * 400;
                             foundFiveDice = true;
                             break;
                         }
@@ -227,30 +227,30 @@ const Game = () => {
 
                 // 4 dados iguales
                 if (count[0] === 4 && count[4] === 1) { // Cuatro dados de 1 y un dado de 5
-                    newRollScore += 4050;
+                    newRollScore += 2050;
                     break;
                 } else if (count[0] === 4) { // Cuatro dados de 1
-                    newRollScore += 4000;
+                    newRollScore += 2000;
                     break;
                 } else if (count[4] === 4 && count[0] === 1) { // Cuatro dados de 5 y un dado de 1
-                    newRollScore += 2100;
+                    newRollScore += 1100;
                     break;
                 } else if (count[4] === 4) { // Cuatro dados de 5
-                    newRollScore += 2000;
+                    newRollScore += 1000;
                     break;
                 } else {
                     let foundFourDice = false;
                     for (let i = 1; i < 6; i++) {
                         if (i !== 4 && count[i] === 4 && count[0] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 1
-                            newRollScore += (i + 1) * 400 + 100;
+                            newRollScore += (i + 1) * 200 + 100;
                             foundFourDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 4 && count[4] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 5
-                            newRollScore += (i + 1) * 400 + 50;
+                            newRollScore += (i + 1) * 200 + 50;
                             foundFourDice = true;
                             break;
                         } else if (i !== 4 && count[i] === 4) { // Cuatro dados de 2, 3, 4 o 6
-                            newRollScore += (i + 1) * 400;
+                            newRollScore += (i + 1) * 200;
                             foundFourDice = true;
                             break;
                         }
@@ -299,6 +299,27 @@ const Game = () => {
                 }
 
             case 4:
+                // 4 dados iguales
+                if (count[0] === 4) { // Cuatro dados de 1
+                    newRollScore += 2000;
+                    break;
+                } else if (count[4] === 4) { // Cuatro dados de 5
+                    newRollScore += 1000;
+                    break;
+                } else {
+                    let foundFourDice = false;
+                    for (let i = 1; i < 6; i++) {
+                        if (i !== 4 && count[i] === 4) { // Cuatro dados de 2, 3, 4 o 6
+                            newRollScore += (i + 1) * 200;
+                            foundFourDice = true;
+                            break;
+                        }
+                    }
+                    if (foundFourDice) {
+                        break;
+                    }
+                }
+                
                 // 3 dados iguales
                 let fourDiceThreeEq = false;
                 for (let i = 0; i < 6; i++) {
