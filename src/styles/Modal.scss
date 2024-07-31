@@ -1,0 +1,48 @@
+// Modal.scss
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #ff6347;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+.modal-content input {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100px;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    margin-left: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 5px;
+    color: black;
+    background-color: aliceblue;
+    &:hover {
+        background-color: rgb(226, 233, 240);
+    } 
+}

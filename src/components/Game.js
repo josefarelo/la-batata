@@ -1,21 +1,41 @@
 import React, { useState } from 'react';
 import Dice from './Dice';
+import Modal from './Modal';
 import '../styles/Game.scss';
 
 const Game = () => {
     const [roll, setRoll] = useState(0);
-    const [turnScore, setTurnScore] = useState(0);
     const [rollScore, setRollScore] = useState(0);
+    const [turnScore, setTurnScore] = useState(0);
+    const [totalScore, setTotalScore] = useState(0);
     const [diceValues, setDiceValues] = useState([1, 1, 1, 1, 1, 1]);
+    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [numPlayers, setNumPlayers] = useState(0);
+    const [players, setPlayers] = useState([]);
+    const [currentPlayerIndex, setCurrentPlayerIndex] = useState(9);
+
+    const handleCloseModal = (players) => { // Maneja la ventana de ingreso de jugadores
+        setNumPlayers(players);
+        setIsModalOpen(false);
+    };
+
+    const handleConfirm = (numPlayers, playerNames) => {
+        // Actualiza el estado con los nombres de los jugadores
+        setPlayers(playerNames);
+    };
+
+    function enteringTheGame(player, points) { // Ingreso al "Juego"
+        player.score += points;
+        if (player.score >= 700) {
+            player.isInGame = true;
+        }
+    }
 
     const rollDice = () => { // Tirar los dados
         setRoll(roll + 1);
 
         // Generar números aleatorios para cada dado
         const newDiceValues = [...Array(6)].map(() => Math.floor(Math.random() * 6) + 1);
-
-        // Mostrar los valores de los dados en la consola
-        console.log('Dados de este turno:', newDiceValues);
 
         // Actualizar valores de los dados
         setDiceValues(newDiceValues);
@@ -32,7 +52,6 @@ const Game = () => {
         // Verificar reglas de puntaje según las combinaciones de dados
         switch (newDiceValues.length) {
             // Cada Case depende de la cantidad de dados tirados
-
             case 6:
                 // 6 dados iguales
                 if (count[0] === 6) { // Seis dados de 1
@@ -422,20 +441,35 @@ const Game = () => {
         // Actualizar el puntaje total del turno y puntaje de la tirada
         setTurnScore(turnScore + newRollScore);
         setRollScore(newRollScore);
+
+        setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
     };
+
+    const currentPlayer = players[currentPlayerIndex];
 
     return (
         <div className="game">
-            <div className="dice-container">
-                {diceValues.map((value, index) => (
-                    <Dice key={index} number={value} />
-                ))}
-            </div>
-            <button className="roll-button" onClick={rollDice}>Tirar los dados</button>
-            <div className="rolls">
-                <p>Puntaje de la tirada: {rollScore}</p>
-                <p>Puntaje acumulado del turno: {turnScore}</p>
-            </div>
+            <Modal 
+                isOpen={isModalOpen} 
+                onClose={handleCloseModal} 
+                onConfirm={handleConfirm}
+            />
+            {!isModalOpen && (
+                <div>
+                    <div className="dice-container">
+                        {diceValues.map((value, index) => (
+                            <Dice key={index} number={value} />
+                        ))}
+                    </div>
+                    <button className="roll-button" onClick={rollDice}>Tirar los dados</button>
+                    <div className="rolls">
+                        <p>{currentPlayer}</p>
+                        <p>Puntaje de la tirada: {rollScore}</p>
+                        <p>Puntaje acumulado del turno: {turnScore}</p>
+                        <p>Puntaje total del jugador: {totalScore}</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
