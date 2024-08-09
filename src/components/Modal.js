@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Modal.scss';
 
 const Modal = ({ isOpen, onClose, onConfirm }) => {
-    const [players, setPlayers] = useState('');
+    const [players, setPlayers] = useState([]);
 
     const handleChange = (e) => {
         setPlayers(e.target.value);
@@ -12,8 +12,9 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
         const numPlayers = parseInt(players, 10);
         if (numPlayers >= 2 && numPlayers <= 10) {
             const playerNames = Array.from({ length: numPlayers }, (_, index) => `Jugador ${index + 1}`);
+            const playerScores = Array.from({ length: numPlayers }, () => 0);
             if (typeof onConfirm === 'function') {
-                onConfirm(numPlayers, playerNames);
+                onConfirm(numPlayers, playerNames, playerScores);
             } else {
                 console.error('onConfirm is not a function');
             }

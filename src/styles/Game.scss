@@ -11,27 +11,34 @@
     gap: 10px;
 }
 
-.roll-button {
-    width: 120px;
-    height: 50px;
-    margin: 3%;
-    font-size: 1rem;
-    border: 2px solid black;
-    border-radius: 10px;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.2s, background-color 0.2s;
-    background-color: #fff;
-    color: #000;
+.buttons-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .roll-button, .end-turn-button {
+        width: 120px;
+        height: 50px;
+        margin: 3%;
+        font-size: 1rem;
+        border: 2px solid black;
+        border-radius: 10px;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.2s, background-color 0.2s;
+        background-color: #fff;
+        color: #000;
+
+        &:hover {
+            background-color: #f0f0f0;
+        }
+        
+        &:active {
+            transform: scale(0.95);
+        }
+    }
 }
 
-.roll-button:hover {
-    background-color: #f0f0f0;
-}
-
-.roll-button:active {
-    transform: scale(0.95);
-}
 /* Responsive Design */
 
 @media (max-width: 320px) {

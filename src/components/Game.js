@@ -7,29 +7,25 @@ const Game = () => {
     const [roll, setRoll] = useState(0);
     const [rollScore, setRollScore] = useState(0);
     const [turnScore, setTurnScore] = useState(0);
-    const [totalScore, setTotalScore] = useState(0);
+    const [totalScore, setTotalScore] = useState([]);
     const [diceValues, setDiceValues] = useState([1, 1, 1, 1, 1, 1]);
     const [isModalOpen, setIsModalOpen] = useState(true);
-    const [numPlayers, setNumPlayers] = useState(0);
     const [players, setPlayers] = useState([]);
-    const [currentPlayerIndex, setCurrentPlayerIndex] = useState(9);
+    const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+    const [currentScoreIndex, setCurrentScoreIndex] = useState(0);
 
-    const handleCloseModal = (players) => { // Maneja la ventana de ingreso de jugadores
-        setNumPlayers(players);
+    const currentPlayer = players[currentPlayerIndex];
+    const currentScore = totalScore[currentScoreIndex];
+    
+    const handleCloseModal = () => { // Maneja la ventana de ingreso de jugadores
         setIsModalOpen(false);
     };
 
-    const handleConfirm = (numPlayers, playerNames) => {
+    const handleConfirm = (numPlayers, playerNames, playerScores) => {
         // Actualiza el estado con los nombres de los jugadores
         setPlayers(playerNames);
+        setTotalScore(playerScores);
     };
-
-    function enteringTheGame(player, points) { // Ingreso al "Juego"
-        player.score += points;
-        if (player.score >= 700) {
-            player.isInGame = true;
-        }
-    }
 
     const rollDice = () => { // Tirar los dados
         setRoll(roll + 1);
@@ -441,11 +437,19 @@ const Game = () => {
         // Actualizar el puntaje total del turno y puntaje de la tirada
         setTurnScore(turnScore + newRollScore);
         setRollScore(newRollScore);
-
-        setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
     };
 
-    const currentPlayer = players[currentPlayerIndex];
+
+    const endTurn = () => { // Finalizar el turno del jugador y pasar al siguiente
+        if (currentPlayerIndex === currentScoreIndex) { // Actualiza el puntaje total del jugador actual
+            const newTotalScore = [...totalScore];
+            newTotalScore[currentScoreIndex] += turnScore;
+            setTotalScore(newTotalScore);
+        }
+        setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
+        setCurrentScoreIndex((prevIndex) => (prevIndex + 1) % totalScore.length);
+        setTurnScore(0);
+    }
 
     return (
         <div className="game">
@@ -461,12 +465,15 @@ const Game = () => {
                             <Dice key={index} number={value} />
                         ))}
                     </div>
-                    <button className="roll-button" onClick={rollDice}>Tirar los dados</button>
+                    <div className='buttons-container'>
+                        <button className="roll-button" onClick={rollDice}>Tirar los dados</button>
+                        <button className="end-turn-button" onClick={endTurn}>Terminar turno</button>
+                    </div>
                     <div className="rolls">
                         <p>{currentPlayer}</p>
                         <p>Puntaje de la tirada: {rollScore}</p>
                         <p>Puntaje acumulado del turno: {turnScore}</p>
-                        <p>Puntaje total del jugador: {totalScore}</p>
+                        <p>Puntaje total del jugador: {totalScore[currentScoreIndex]}</p> 
                     </div>
                 </div>
             )}
