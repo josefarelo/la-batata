@@ -13,8 +13,9 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
         if (numPlayers >= 2 && numPlayers <= 10) {
             const playerNames = Array.from({ length: numPlayers }, (_, index) => `Jugador ${index + 1}`);
             const playerScores = Array.from({ length: numPlayers }, () => 0);
+            const inGame = Array.from({ length: numPlayers }, () => false);
             if (typeof onConfirm === 'function') {
-                onConfirm(numPlayers, playerNames, playerScores);
+                onConfirm(numPlayers, playerNames, playerScores, inGame);
             } else {
                 console.error('onConfirm is not a function');
             }
