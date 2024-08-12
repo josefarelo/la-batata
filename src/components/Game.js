@@ -11,14 +11,14 @@ const Game = () => {
     const [maximumPointsSupperpassed, setMaximumPointsSupperpassed] = useState(false);
     const [turnScore, setTurnScore] = useState(0);
     const [diceValues, setDiceValues] = useState([1, 1, 1, 1, 1, 1]);
-    const [numberOfDice, setNumberOfDice] = useState(6);
-    const [diceCount, setDiceCount] = useState(0);
+    const [updateNumberOfDice, setUpdateNumberOfDice] = useState(6);
     const [isModalOpen, setIsModalOpen] = useState(true);
     const [players, setPlayers] = useState([]);
     const [totalScore, setTotalScore] = useState([]);
     const [playerInGame, setPlayerInGame] = useState([]);
     const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
     const [currentScoreIndex, setCurrentScoreIndex] = useState(0);
+    const [pure, setPure] = useState(false);
 
     const currentPlayer = players[currentPlayerIndex];
     
@@ -61,6 +61,15 @@ const Game = () => {
 
     const rollDice = () => { // Tirar los dados
 
+        let diceCount = 0;
+        
+        if (roll === 0) {
+            setUpdateNumberOfDice(6);
+        }
+        console.log("updateNumberOfDice: " + updateNumberOfDice);
+        let numberOfDice = updateNumberOfDice;
+        console.log("numberOfDice parte 1: " + numberOfDice);
+
         // Verificar si el jugador está dentro del juego para permitir más tiradas
         if (roll === 1 && turnScore < 700 &&!playerInGame[currentPlayerIndex]) {
             alert("No puedes tirar más los dados, no estás dentro del juego");
@@ -69,8 +78,7 @@ const Game = () => {
         } else {
 
             // Generar números aleatorios para cada dado
-            //const diceAmount = [...Array(numberOfDice)].map(() => Math.floor(Math.random() * 6) + 1);
-            const diceAmount = [6, 6, 6, 1, 5, 2];
+            const diceAmount = [...Array(numberOfDice)].map(() => Math.floor(Math.random() * 6) + 1);
 
             // Actualizar valores de los dados
             setDiceValues(diceAmount);
@@ -116,14 +124,14 @@ const Game = () => {
                         break;
                     } else if (count[0] === 5) { // Cinco dados de 1
                         newRollScore += 4000;
-                        setNumberOfDice(1);
+                        numberOfDice = 1;
                         break;
                     } else if (count[4] === 5 && count[0] === 1) { // Cinco dados de 5 y un dado de 1
                         newRollScore += 2100;
                         break;
                     } else if (count[4] === 5) { // Cinco dados de 5
                         newRollScore += 2000;
-                        setNumberOfDice(1);
+                        numberOfDice = 1;
                         break;
                     } else {
                         let foundFiveDice = false;
@@ -139,7 +147,7 @@ const Game = () => {
                             } else if (i !== 4 && count[i] === 5) { // Cinco dados de 2, 3, 4 o 6
                                 newRollScore += (i + 1) * 400;
                                 foundFiveDice = true;
-                                setNumberOfDice(1);
+                                numberOfDice = 1;
                                 break;
                             }
                         }
@@ -147,29 +155,29 @@ const Game = () => {
                             break;
                         }
                     }
-    
+
                     // 4 dados iguales
                     if (count[0] === 4 && count[4] === 2) { // Cuatro dados de 1 y dos dados de 5
                         newRollScore += 2100;
                         break;
                     } else if (count[0] === 4 && count[4] === 1) { // Cuatro dados de 1 y un dado de 5
                         newRollScore += 2050;
-                        setNumberOfDice(1);
+                        numberOfDice = 1;
                         break;
                     } else if (count[0] === 4) { // Cuatro dados de 1
                         newRollScore += 2000;
-                        setNumberOfDice(2);
+                        numberOfDice = 2;;
                         break;
                     } else if (count[4] === 4 && count[0] === 2) { // Cuatro dados de 5 y dos dados de 1
                         newRollScore += 1200;
                         break;
                     } else if (count[4] === 4 && count[0] === 1) { // Cuatro dados de 5 y un dado de 1
                         newRollScore += 1100;
-                        setNumberOfDice(1);
+                        numberOfDice = 1;
                         break;
                     } else if (count[4] === 4) { // Cuatro dados de 5
                         newRollScore += 1000;
-                        setNumberOfDice(2);
+                        numberOfDice = 2;;
                         break;
                     } else {
                         let foundFourDice = false;
@@ -189,17 +197,17 @@ const Game = () => {
                             } else if (i !== 4 && count[i] === 4 && count[0] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 1
                                 newRollScore += (i + 1) * 200 + 100;
                                 foundFourDice = true;
-                                setNumberOfDice(1);
+                                numberOfDice = 1;
                                 break;
                             } else if (i !== 4 && count[i] === 4 && count[4] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 5
                                 newRollScore += (i + 1) * 200 + 50;
                                 foundFourDice = true;
-                                setNumberOfDice(1);
+                                numberOfDice = 1;
                                 break;
                             } else if (i !== 4 && count[i] === 4) { // Cuatro dados de 2, 3, 4 o 6
                                 newRollScore += (i + 1) * 200;
                                 foundFourDice = true;
-                                setNumberOfDice(2);
+                                numberOfDice = 2;;
                                 break;
                             }
                         }
@@ -224,7 +232,7 @@ const Game = () => {
                         break;
                     } else if ((sixDiceladder1) || (sixDiceladder2)) { // 1, 2, 3, 4, 5  o  2, 3, 4, 5, 6
                         newRollScore += 1500;
-                        setNumberOfDice(1);
+                        numberOfDice = 1;
                         break;
                     }
     
@@ -239,7 +247,7 @@ const Game = () => {
                         newRollScore += 1500;
                         break;
                     }
-    
+
                     // 3 dados iguales
                     let sixDiceThreeEq = false;
                     for (let i = 0; i < 6; i++) {
@@ -247,63 +255,50 @@ const Game = () => {
                             newRollScore += (i + 1) * 100;
                             sixDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(diceCount + updateDiceCount);
-                            console.log("Tres dados de 2, 3, 4 o 6");
-                            console.log("diceCount = " + diceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if (i === 0 && count[i] === 3) { // Tres dados de 1
                             newRollScore += 1000;
                             sixDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if (i === 4 && count[i] === 3) { // Tres dados de 5
                             newRollScore += 500;
                             sixDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         }
                     // Dados 1 y 5    
                         if (i === 0 && count[i] === 2) { // Dos dados de 1
                             newRollScore += 200;
                             sixDiceThreeEq = true;
                             const updateDiceCount = 2;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
                             newRollScore += 100;
                             sixDiceThreeEq = true;
                             if (i === 4 && count[i] === 2) {
                                 const updateDiceCount = 2;
-                                setDiceCount(prevCount => prevCount + updateDiceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             } else {
                                 const updateDiceCount = 1;
-                                setDiceCount(diceCount + updateDiceCount);
-                                const testCount = diceCount;
-                                console.log("test: " + testCount);
-                                console.log("Un dado de 1");
-                                console.log("diceCount = " + diceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             }
                         } else if (i === 4 && count[i] === 1) { // Un dado de 5
                             newRollScore += 50;
                             sixDiceThreeEq = true;
                             const updateDiceCount = 1;
-                            setDiceCount(diceCount + updateDiceCount);
-                            console.log("Un dado de 5");
-                            console.log("diceCount = " + diceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         }
-                        console.log("diceCount = " + diceCount);
                     }
                     if (sixDiceThreeEq) {
-                        console.log("diceCount = " + diceCount);
                         if (diceCount === 6) {
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         } else {
-                            setNumberOfDice(prevCount => prevCount - diceCount);
-                            console.log("numberOfDice = " + numberOfDice);
+                            numberOfDice = (numberOfDice - diceCount);
                             if (numberOfDice === 0) {
-                                setNumberOfDice(6);
+                                numberOfDice = 6;
                             }
                         }
-                        //setDiceCount(0);
-                        console.log("Termina");
                         break;
                     }
                 
@@ -311,11 +306,11 @@ const Game = () => {
                     // 5 dados iguales
                     if (count[0] === 5) { // Cinco dados de 1
                         newRollScore += 4000;
-                        setNumberOfDice(6);
+                        numberOfDice = 6;
                         break;
                     } else if (count[4] === 5) { // Cinco dados de 5
                         newRollScore += 2000;
-                        setNumberOfDice(6);
+                        numberOfDice = 6;
                         break;
                     } else {
                         let foundFiveDice = false;
@@ -327,7 +322,7 @@ const Game = () => {
                             }
                         }
                         if (foundFiveDice) {
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                             break;
                         }
                     }
@@ -335,19 +330,19 @@ const Game = () => {
                     // 4 dados iguales
                     if (count[0] === 4 && count[4] === 1) { // Cuatro dados de 1 y un dado de 5
                         newRollScore += 2050;
-                        setNumberOfDice(6);
+                        numberOfDice = 6;
                         break;
                     } else if (count[0] === 4) { // Cuatro dados de 1
                         newRollScore += 2000;
-                        setNumberOfDice(1);
+                        numberOfDice = 1;
                         break;
                     } else if (count[4] === 4 && count[0] === 1) { // Cuatro dados de 5 y un dado de 1
                         newRollScore += 1100;
-                        setNumberOfDice(6);
+                        numberOfDice = 6;
                         break;
                     } else if (count[4] === 4) { // Cuatro dados de 5
                         newRollScore += 1000;
-                        setNumberOfDice(1);
+                        numberOfDice = 1;
                         break;
                     } else {
                         let foundFourDice = false;
@@ -355,17 +350,17 @@ const Game = () => {
                             if (i !== 4 && count[i] === 4 && count[0] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 1
                                 newRollScore += (i + 1) * 200 + 100;
                                 foundFourDice = true;
-                                setNumberOfDice(6);
+                                numberOfDice = 6;
                                 break;
                             } else if (i !== 4 && count[i] === 4 && count[4] === 1) { // Cuatro dados de 2, 3, 4 o 6 y un dado de 5
                                 newRollScore += (i + 1) * 200 + 50;
                                 foundFourDice = true;
-                                setNumberOfDice(6);
+                                numberOfDice = 6;
                                 break;
                             } else if (i !== 4 && count[i] === 4) { // Cuatro dados de 2, 3, 4 o 6
                                 newRollScore += (i + 1) * 200;
                                 foundFourDice = true;
-                                setNumberOfDice(1);
+                                numberOfDice = 1;
                                 break;
                             }
                         }
@@ -380,7 +375,7 @@ const Game = () => {
     
                     if ((fiveDiceladder1) || (fiveDiceladder2)) { // 1, 2, 3, 4, 5  o  2, 3, 4, 5, 6
                         newRollScore += 1500;
-                        setNumberOfDice(6);
+                        numberOfDice = 6;
                         break;
                     }
     
@@ -391,51 +386,50 @@ const Game = () => {
                             newRollScore += (i + 1) * 100;
                             fiveDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if (i === 0 && count[i] === 3) { // Tres dados de 1
                             newRollScore += 1000;
                             fiveDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if (i === 4 && count[i] === 3) { // Tres dados de 5
                             newRollScore += 500;
                             fiveDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         }
     
                         if (i === 0 && count[i] === 2) { // Dos dados de 1
                             newRollScore += 200;
                             fiveDiceThreeEq = true;
                             const updateDiceCount = 2;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
                             newRollScore += 100;
                             fiveDiceThreeEq = true;
                             if (i === 4 && count[i] === 2) {
                                 const updateDiceCount = 2;
-                                setDiceCount(prevCount => prevCount + updateDiceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             } else {
                                 const updateDiceCount = 1;
-                                setDiceCount(prevCount => prevCount + updateDiceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             }
                         } else if (i === 4 && count[i] === 1) { // Un dado de 5
                             newRollScore += 50;
                             fiveDiceThreeEq = true;
                             const updateDiceCount = 1;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         }
                     }
                     if (fiveDiceThreeEq) {
                         if (diceCount === 5) {
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         } else {
-                            setNumberOfDice(prevCount => prevCount - diceCount);
+                            numberOfDice = (numberOfDice - diceCount);
                             if (numberOfDice === 0) {
-                                setNumberOfDice(6);
+                                numberOfDice = 6;
                             }
                         }
-                        setDiceCount(0);
                         break;
                     }
     
@@ -443,11 +437,11 @@ const Game = () => {
                     // 4 dados iguales
                     if (count[0] === 4) { // Cuatro dados de 1
                         newRollScore += 2000;
-                        setNumberOfDice(6);
+                        numberOfDice = 6;
                         break;
                     } else if (count[4] === 4) { // Cuatro dados de 5
                         newRollScore += 1000;
-                        setNumberOfDice(6);
+                        numberOfDice = 6;
                         break;
                     } else {
                         let foundFourDice = false;
@@ -459,7 +453,7 @@ const Game = () => {
                             }
                         }
                         if (foundFourDice) {
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                             break;
                         }
                     }
@@ -471,48 +465,47 @@ const Game = () => {
                             newRollScore += (i + 1) * 100;
                             fourDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if (i === 0 && count[i] === 3) { // Tres dados de 1
                             newRollScore += 1000;
                             fourDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if (i === 4 && count[i] === 3) { // Tres dados de 5
                             newRollScore += 500;
                             fourDiceThreeEq = true;
                             const updateDiceCount = 3;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         }
     
                         if (i === 0 && count[i] === 2) { // Dos dados de 1
                             newRollScore += 200;
                             fourDiceThreeEq = true;
                             const updateDiceCount = 2;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
                             newRollScore += 100;
                             fourDiceThreeEq = true;
                             if (i === 4 && count[i] === 2) {
                                 const updateDiceCount = 2;
-                                setDiceCount(prevCount => prevCount + updateDiceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             } else {
                                 const updateDiceCount = 1;
-                                setDiceCount(prevCount => prevCount + updateDiceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             }
                         } else if (i === 4 && count[i] === 1) { // Un dado de 5
                             newRollScore += 50;
                             fourDiceThreeEq = true;
                             const updateDiceCount = 1;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         }
                     }
                     if (fourDiceThreeEq) {
                         if (diceCount === 4) {
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         } else {
-                            setNumberOfDice(prevCount => prevCount - diceCount);
+                            numberOfDice = (numberOfDice - diceCount);
                         }
-                        setDiceCount(0);
                         break;
                     }
     
@@ -523,46 +516,45 @@ const Game = () => {
                         if (i !== 0 && i !== 4 && count[i] === 3) { // Tres dados de 2, 3, 4 o 6
                             newRollScore += (i + 1) * 100;
                             threeDiceThreeEq = true;
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         } else if (i === 0 && count[i] === 3) { // Tres dados de 1
                             newRollScore += 1000;
                             threeDiceThreeEq = true;
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         } else if (i === 4 && count[i] === 3) { // Tres dados de 5
                             newRollScore += 500;
                             threeDiceThreeEq = true;
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         }
     
                         if (i === 0 && count[i] === 2) { // Dos dados de 1
                             newRollScore += 200;
                             threeDiceThreeEq = true;
                             const updateDiceCount = 2;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
                             newRollScore += 100;
                             threeDiceThreeEq = true;
                             if (i === 4 && count[i] === 2) {
                                 const updateDiceCount = 2;
-                                setDiceCount(prevCount => prevCount + updateDiceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             } else {
                                 const updateDiceCount = 1;
-                                setDiceCount(prevCount => prevCount + updateDiceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             }
                         } else if (i === 4 && count[i] === 1) { // Un dado de 5
                             newRollScore += 50;
                             threeDiceThreeEq = true;
                             const updateDiceCount = 1;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         }
                     }
                     if (threeDiceThreeEq) {
                         if (diceCount === 3) {
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         } else {
-                            setNumberOfDice(prevCount => prevCount - diceCount);
+                            numberOfDice = (numberOfDice - diceCount);
                         }
-                        setDiceCount(0);
                         break;
                     }
     
@@ -573,30 +565,29 @@ const Game = () => {
                         if (i === 0 && count[i] === 2) { // Dos dados de 1
                             newRollScore += 200;
                             twoDiceTh = true;
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         } else if ((i === 0 && count[i] === 1) || (i === 4 && count[i] === 2)) { // Dos dados de 5 o Un dado de 1
                             newRollScore += 100;
                             twoDiceTh = true;
                             if (i === 4 && count[i] === 2) {
-                                setNumberOfDice(6);
+                                numberOfDice = 6;
                             } else {
                                 const updateDiceCount = 1;
-                                setDiceCount(prevCount => prevCount + updateDiceCount);
+                                diceCount = (diceCount + updateDiceCount);
                             }
                         } else if (i === 4 && count[i] === 1) { // Un dado de 5
                             newRollScore += 50;
                             twoDiceTh = true;
                             const updateDiceCount = 1;
-                            setDiceCount(prevCount => prevCount + updateDiceCount);
+                            diceCount = (diceCount + updateDiceCount);
                         }
                     }
                     if (twoDiceTh) {
                         if (diceCount === 2) {
-                            setNumberOfDice(6);
+                            numberOfDice = 6;
                         } else {
-                            setNumberOfDice(prevCount => prevCount - diceCount);
+                            numberOfDice = (numberOfDice - diceCount);
                         }
-                        setDiceCount(0);
                         break;
                     }
     
@@ -613,20 +604,25 @@ const Game = () => {
                         }
                     }
                     if (oneDiceTh) {
-                        setNumberOfDice(6);
+                        numberOfDice = 6;
                         break;
                     }
     
                 default: 
-                    newRollScore += 0;
-                    //setNumberOfDice(6);
-                    //alert("¡¡¡Te hiciste puré!!! Perdiste todos los puntos de esta ronda");
+                    numberOfDice = 6;
+                    setPure(true);
+                    alert("¡¡¡Te hiciste puré!!! Perdiste todos los puntos de esta ronda");
                     break;
             }
-    
+
             // Actualizar el puntaje total del turno y puntaje de la tirada
             setRollScore(newRollScore);
             setTurnScore(turnScore + newRollScore);
+            setUpdateNumberOfDice(numberOfDice);
+            console.log("numberOfDice: " + numberOfDice);
+            console.log(diceAmount);
+            console.log(newRollScore);
+            console.log("------------------------------------------------");
             
             // Contador de tiradas
             setRoll(roll + 1); 
@@ -637,7 +633,7 @@ const Game = () => {
 
         // Actualización de puntajes y cambio de turno
         if (playerInGame[currentPlayerIndex]) {
-            if (currentPlayerIndex === currentScoreIndex && !maximumPointsSupperpassed) { // Actualiza los puntos si no sobrepasa el límite de puntuación
+            if (currentPlayerIndex === currentScoreIndex && !maximumPointsSupperpassed && !pure) { // Actualiza los puntos si no sobrepasa el límite de puntuación
                 const newTotalScore = [...totalScore];
                 newTotalScore[currentScoreIndex] += turnScore;
                 setTotalScore(newTotalScore);
@@ -650,7 +646,8 @@ const Game = () => {
         setRoll(0);
         setRollCondition(true);
         setMaximumPointsSupperpassed(false);
-        setNumberOfDice(6);
+        setUpdateNumberOfDice(6);
+        setPure(false);
     }
 
     return (
@@ -670,7 +667,7 @@ const Game = () => {
                     <div className='buttons-container'>
                         <button className="roll-button" 
                             onClick={rollDice}
-                            disabled={!rollCondition || gameOver || maximumPointsSupperpassed}
+                            disabled={!rollCondition || gameOver || maximumPointsSupperpassed || pure}
                         >
                             Tirar los dados
                         </button>
