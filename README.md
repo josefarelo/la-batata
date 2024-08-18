@@ -26,7 +26,7 @@ Cómo jugar:
         El jugador perderá sus dos próximos turnos, pero cuando vuelva a jugar, la puntuación obtenida valdrá el doble. Esta función es válida hasta que el jugador llegue a los 5000 puntos.
 
         Batatear:
-        Los dados se invertirán y se sumarán los puntos al reverso (1 a 6, 2 a 5, 3 a 4, 4 a 3, 5 a 2, 6 a 1). Esta función puede utilizarse una vez por turno.
+        Se lanzarán los dados y sus caras se girarán al reverso. (1 a 6, 2 a 5, 3 a 4, 4 a 3, 5 a 2, 6 a 1). Esta función puede utilizarse una vez por turno.
 
         Batatazo:
         El jugador elegirá a otro participante en juego, lanzará los dados y el puntaje obtenido se restará del puntaje del jugador elegido. Esta función es válida para jugadores con más de 5000 puntos y solo puede usarse una vez cada dos turnos.

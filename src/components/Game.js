@@ -25,6 +25,8 @@ const Game = () => {
     const [activateTurnCounter, setActivateTurnCounter] = useState(false);
     const [roundCounter, setRoundCounter] = useState(-1);
     const [batataCaliente, setBatataCaliente] = useState(false);
+    const [batatearOn, setBatatearON] = useState(false);
+    const [canBatatear, setCanBatatear] = useState(false);
 
     const currentPlayer = players[currentPlayerIndex];
 
@@ -78,9 +80,9 @@ const Game = () => {
         }
     }, [turnScore]); // !LUEGO AGREGAR LAS CONDICIONES DE FUNCIONES ESPECIALES DONDE ESTEN DENTRO O FUERA DEL MID GAME!
 
-    useEffect(() => { // Actualizar cantidad de rondas
+    useEffect(() => { // Actualizar cantidad de rondas y habilitar "Batatear"
         // Activar contador de turnos
-        if(players.length > 2 && playerInGame.every(player => player) && currentPlayerIndex === 0 && !activateTurnCounter) {
+        if (players.length > 2 && playerInGame.every(player => player) && currentPlayerIndex === 0 && !activateTurnCounter) {
             setActivateTurnCounter(true);
             setTurnCounter(0);
         }
@@ -92,6 +94,14 @@ const Game = () => {
             }
             console.log("Ronda = " + roundCounter);
             setTurnCounter(0);
+        }
+
+        // Habilitar botón de Batatear
+        if (playerInGame[currentPlayerIndex]) {
+            setCanBatatear(true);
+        }
+        if (batataCaliente) {
+            setCanBatatear (false);
         }
     }, [turnCounter]);
 
@@ -134,6 +144,17 @@ const Game = () => {
                 }
             } else {
                 diceAmount = [...Array(numberOfDice)].map(() => Math.floor(Math.random() * 6) + 1); // Generar números aleatorios para cada dado
+                if (batatearOn) { // Batatear los dados
+                    const invertDice = {
+                        1: 6,
+                        6: 1,
+                        2: 5,
+                        5: 2,
+                        3: 4,
+                        4: 3
+                    };
+                    diceAmount = diceAmount.map(num => invertDice[num] !== undefined ? invertDice[num] : num);
+                };
             }
 
             // Actualizar valores de los dados
@@ -666,13 +687,14 @@ const Game = () => {
     
                 default: 
                     numberOfDice = 6;
-                    setPure(true);
+                    let updatePure = true;
                     if (batataCaliente || !playerInGame[currentPlayerIndex]) {
-                        setPure(false);
+                        updatePure = false;
                     }
-                    if (pure) {
+                    if (updatePure) {
                         alert("¡¡¡Te hiciste puré!!! Perdiste todos los puntos de esta ronda");
                     }
+                    setPure(updatePure);
                     break;
             }
 
@@ -701,6 +723,11 @@ const Game = () => {
                 setUpdateNumberOfDice(numberOfDice);
             }
 
+            if (batatearOn) {
+                setCanBatatear(false);
+                setBatatearON(false);
+                console.log("Batatear OFF");
+            }
             setRoll(roll + 1); // Contador de tiradas
         }
     };
@@ -721,7 +748,6 @@ const Game = () => {
                 setForcedThrow(false);
             }
         }
-
         setTurnCounter(prevTurnCounter => prevTurnCounter + 1);
         setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
         setCurrentScoreIndex((prevIndex) => (prevIndex + 1) % totalScore.length);
@@ -734,6 +760,22 @@ const Game = () => {
         setPure(false);
     }
 
+    const batatear = () => { // Función especial Batatear
+        if (canBatatear) {
+            setBatatearON(true);
+            console.log("Batatear ON");
+        }
+    };
+
+    const batataDeLaFortuna = () => { // Función especial batata de la fortuna
+        //codigo
+    };
+    
+
+    const batatazo = () => { // Función especial batatazo
+        //codigo
+    };
+    
     return (
         <div className="game">
             <Modal 
@@ -742,27 +784,49 @@ const Game = () => {
                 onConfirm={handleConfirm}
             />
             {!isModalOpen && (
-                <div>
+                <div className='game-container'>
                     <div className="dice-container">
                         {diceValues.map((value, index) => (
                             <Dice key={index} number={value} />
                         ))}
                     </div>
                     <div className='buttons-container'>
-                        <button className="roll-button" 
-                            onClick={rollDice}
-                            disabled={!rollCondition || gameOver || maximumPointsSupperpassed || pure}
-                        >
-                            Tirar los dados
-                        </button>
-                        <button className="end-turn-button" 
-                            onClick={endTurn}
-                            disabled={gameOver || forcedThrow}
-                        >
-                            Finalizar turno
-                        </button>
+                        <div className='turn-buttons'>
+                            <button className="roll-button" 
+                                onClick={rollDice}
+                                disabled={!rollCondition || gameOver || maximumPointsSupperpassed || pure}
+                            >
+                                Tirar los dados
+                            </button>
+                            <button className="end-turn-button" 
+                                onClick={endTurn}
+                                disabled={gameOver || forcedThrow}
+                            >
+                                Finalizar turno
+                            </button>
+                        </div>
+                        <div className='special-buttons'>
+                            <button className="batatear" 
+                                onClick={batatear}
+                                disabled={gameOver || maximumPointsSupperpassed || pure || !canBatatear}
+                            >
+                                Batatear
+                            </button>
+                            <button className="batata-de-la-fortuna" 
+                                onClick={batataDeLaFortuna}
+                                //disabled={gameOver || forcedThrow}
+                            >
+                                Batata de la fortuna
+                            </button>
+                            <button className="batatazo" 
+                                onClick={batatazo}
+                                //disabled={gameOver || forcedThrow}
+                            >
+                                Batatazo
+                            </button>
+                        </div>
                     </div>
-                    <div className="rolls">
+                    <div className="player-points">
                         <p>{currentPlayer}</p>
                         <p>Puntaje de la tirada: {rollScore}</p>
                         <p>Puntaje acumulado del turno: {turnScore}</p>
