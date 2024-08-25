@@ -27,6 +27,8 @@ const Game = () => {
     const [batataCaliente, setBatataCaliente] = useState(false);
     const [batatearOn, setBatatearON] = useState(false);
     const [canBatatear, setCanBatatear] = useState(false);
+    const [fortuneBatataOn, setFortuneBatataOn] = useState([]);
+    const [fortuneBatataCounter, setFortuneBatataCounter] = useState([]);
 
     const currentPlayer = players[currentPlayerIndex];
 
@@ -43,6 +45,14 @@ const Game = () => {
     };
 
     useEffect(() => { // Condiciones por puntaje del jugador (Ingreso al juego, Ganar, Límite para funciones especiales...)
+
+        // Crear "Batata de la fortuna"
+        if (fortuneBatataOn.length === 0) {
+            const updateFortuneBatata = [...playerInGame];
+            setFortuneBatataOn(updateFortuneBatata);
+            setFortuneBatataCounter(Array.from({ length: updateFortuneBatata.length }, () => 0));
+        }
+
         // Entrada al "Juego"
         if (turnScore >= 700 && !playerInGame[currentPlayerIndex]) { 
             // El jugador ingresa al juego
@@ -78,7 +88,14 @@ const Game = () => {
             updatePlayerMidGame[currentPlayerIndex] = false;
             setPlayerMidGame(updatePlayerMidGame);
         }
-    }, [turnScore]); // !LUEGO AGREGAR LAS CONDICIONES DE FUNCIONES ESPECIALES DONDE ESTEN DENTRO O FUERA DEL MID GAME!
+
+        // Finalizar el turno para el jugador que haya usado la Batata de la fortuna
+        if (fortuneBatataOn[currentPlayerIndex] && (fortuneBatataCounter[currentPlayerIndex] === 1 || fortuneBatataCounter[currentPlayerIndex] === 2)) {
+            const updateRollCondition = false;
+            setRollCondition(updateRollCondition);
+            alert(players[currentPlayerIndex] + " debes esperar " + (3 - fortuneBatataCounter[currentPlayerIndex]) + " turno/s para poder lanzar los dados!");
+        }
+    }, [turnScore, totalScore[currentPlayerIndex]]);
 
     useEffect(() => { // Actualizar cantidad de rondas y habilitar "Batatear"
         // Activar contador de turnos
@@ -87,7 +104,7 @@ const Game = () => {
             setTurnCounter(0);
         }
 
-        //Contador de rondas
+        // Contador de rondas
         if (turnCounter === players.length && turnCounter > 1) {
             if (playerInGame.every(player => player) && currentPlayer[0]){
                 setRoundCounter(prevRoundCounter => prevRoundCounter + 1);
@@ -737,9 +754,15 @@ const Game = () => {
         // Actualización de puntajes y cambio de turno
         if (playerInGame[currentPlayerIndex]) {
             if (currentPlayerIndex === currentScoreIndex && !maximumPointsSupperpassed && !pure) { // Actualiza los puntos si no sobrepasa el límite de puntuación
-                const newTotalScore = [...totalScore];
-                newTotalScore[currentScoreIndex] += turnScore;
-                setTotalScore(newTotalScore);
+                if (fortuneBatataOn[currentPlayerIndex] && fortuneBatataCounter[currentPlayerIndex] === 2) { // Actualiza el puntaje si se activo Batata de la fortuna
+                    const newTotalScore = [...totalScore];
+                    newTotalScore[currentScoreIndex] += (turnScore*2);
+                    setTotalScore(newTotalScore);
+                } else { // Actualiza de forma normal el puntaje del jugador
+                    const newTotalScore = [...totalScore];
+                    newTotalScore[currentScoreIndex] += turnScore;
+                    setTotalScore(newTotalScore);
+                }
             }
         }
         if(batataCaliente && !forcedThrow) {
@@ -748,6 +771,28 @@ const Game = () => {
                 setForcedThrow(false);
             }
         }
+
+        // Actualizar contador de espera de Batata de la fortuna
+        if ((fortuneBatataOn[currentPlayerIndex] && !batataCaliente) || (fortuneBatataCounter[currentPlayerIndex] > 0 && !batataCaliente)) {
+            const updateFortuneBatataCounter = [...fortuneBatataCounter];
+            updateFortuneBatataCounter[currentPlayerIndex] += 1;
+            setFortuneBatataCounter(updateFortuneBatataCounter);
+        }
+        //  Finalizar Batata de la fortuna
+        if (fortuneBatataOn[currentPlayerIndex] && fortuneBatataCounter[currentPlayerIndex] === 3) {
+            const updateFortuneBatata = [...fortuneBatataOn];
+            updateFortuneBatata[currentPlayerIndex] = false;
+            setFortuneBatataOn(updateFortuneBatata);
+            alert("Finalizó la Batata de la fortuna para el " + players[currentPlayerIndex]);
+            console.log("Finalizó la Batata de la fortuna para el " + players[currentPlayerIndex]);
+        }
+        // Resetear tiempo de espera para volver a usar Batata de la fortuna
+        if (fortuneBatataCounter[currentPlayerIndex] === 5) {
+            const updateFortuneBatataCounter = [...fortuneBatataCounter];
+            updateFortuneBatataCounter[currentPlayerIndex] = 0;
+            setFortuneBatataCounter(updateFortuneBatataCounter);
+        }
+
         setTurnCounter(prevTurnCounter => prevTurnCounter + 1);
         setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
         setCurrentScoreIndex((prevIndex) => (prevIndex + 1) % totalScore.length);
@@ -768,7 +813,16 @@ const Game = () => {
     };
 
     const batataDeLaFortuna = () => { // Función especial batata de la fortuna
-        //codigo
+        if (playerMidGame[currentPlayerIndex] && fortuneBatataCounter[currentPlayerIndex] === 0) {
+            const updateFortuneBatata = [...fortuneBatataOn];
+            updateFortuneBatata[currentPlayerIndex] = true;
+            setFortuneBatataOn(updateFortuneBatata);
+            alert("Comenzó la Batata de la fortuna para el " + players[currentPlayerIndex]);
+            console.log("Comenzó la Batata de la fortuna para el " + players[currentPlayerIndex]);
+        }
+        if (fortuneBatataCounter[currentPlayerIndex] > 0 && fortuneBatataCounter[currentPlayerIndex] < 6) {
+            alert(players[currentPlayerIndex] + " debes esperar " + (6 - fortuneBatataCounter[currentPlayerIndex]) + " turno/s para volver a utilizar la Batata de la fortuna!");
+        }
     };
     
 
@@ -814,13 +868,13 @@ const Game = () => {
                             </button>
                             <button className="batata-de-la-fortuna" 
                                 onClick={batataDeLaFortuna}
-                                //disabled={gameOver || forcedThrow}
+                                disabled={gameOver || forcedThrow || maximumPointsSupperpassed || pure}
                             >
                                 Batata de la fortuna
                             </button>
                             <button className="batatazo" 
                                 onClick={batatazo}
-                                //disabled={gameOver || forcedThrow}
+                                //disabled={gameOver || forcedThrow || maximumPointsSupperpassed || pure}
                             >
                                 Batatazo
                             </button>

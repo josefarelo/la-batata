@@ -23,7 +23,7 @@ Cómo jugar:
         Funciones especiales que podrá usar cada jugador:
 
         Batata de la Fortuna:
-        El jugador perderá sus dos próximos turnos, pero cuando vuelva a jugar, la puntuación obtenida valdrá el doble. Esta función es válida hasta que el jugador llegue a los 5000 puntos.
+        El jugador perderá sus dos próximos turnos, pero cuando vuelva a jugar, la puntuación obtenida valdrá el doble. Esta función es válida hasta que el jugador llegue a los 5000 puntos y se deberá esperar dos turnos más para volver a utilizarla.
 
         Batatear:
         Se lanzarán los dados y sus caras se girarán al reverso. (1 a 6, 2 a 5, 3 a 4, 4 a 3, 5 a 2, 6 a 1). Esta función puede utilizarse una vez por turno.
