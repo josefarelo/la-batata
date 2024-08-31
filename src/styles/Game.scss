@@ -1,3 +1,6 @@
+.game {
+    z-index: 1;
+}
 .game-container {
     display: flex;
     flex-direction: column;
@@ -92,6 +95,7 @@
     }
 }
 
+
 /* Responsive Design */
 
 @media (max-width: 320px) {
@@ -101,29 +105,37 @@
 
     .dice-container {
         gap: 5px;
+        display: flex;
+        justify-content: center;
+        .dice {
+            img {
+                width: 43px;  
+                height: 43px;
+            }
+        }
     }
 
     .buttons-container {
         .turn-buttons {
             .roll-button, .end-turn-button {
-                width: 100px;
-                height: 40px;
-                font-size: 0.8rem;
+                width: 75px;
+                height: 35px;
+                font-size: 0.7rem;
             }
         }
         .special-buttons {
             .batatear, .batata-de-la-fortuna, .batatazo {
-                width: 100px;
-                height: 40px;
-                font-size: 0.8rem;
+                width: 75px;
+                height: 35px;
+                font-size: 0.7rem;
             }
         }
     }
 
     .player-points {
-        width: 250px;
+        width: 210px;
         p {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
         }
     }
 }
@@ -134,69 +146,91 @@
     }
 
     .dice-container {
-        gap: 8px;
+        gap: 10px;
+        display: flex;
+        justify-content: center;
+        .dice {
+            img {
+                width: 105px;  
+                height: 105px;
+            }
+        }
     }
 
     .buttons-container {
         .turn-buttons {
             .roll-button, .end-turn-button {
-                width: 110px;
-                height: 45px;
-                font-size: 0.9rem;
+                width: 120px;
+                height: 50px;
+                font-size: 1rem;
             }
         }
         .special-buttons {
             .batatear, .batata-de-la-fortuna, .batatazo {
-                width: 110px;
-                height: 45px;
-                font-size: 0.9rem;
+                width: 120px;
+                height: 50px;
+                font-size: 1rem;
             }
         }
     }
 
     .player-points {
-        width: 315px;
+        width: 345px;
     }
 }
 
 @media (min-width: 481px) and (max-width: 854px) {
     .game-container {
-        gap: 20px;
+        gap: 10px;
     }
 
     .dice-container {
         gap: 10px;
+        .dice {
+            img {
+                width: 60px;  
+                height: 60px;
+            }
+        }
     }
 
     .buttons-container {
+        padding: 0;
         .turn-buttons {
             .roll-button, .end-turn-button {
-                width: 120px;
-                height: 50px;
-                font-size: 1rem;
+                width: 95px;
+                height: 40px;
+                font-size: 0.85rem;
             }
         }
         .special-buttons {
             .batatear, .batata-de-la-fortuna, .batatazo {
-                width: 120px;
-                height: 50px;
-                font-size: 1rem;
+                width: 95px;
+                height: 40px;
+                font-size: 0.85rem;
             }
         }
     }
 
     .player-points {
-        width: 350px;
+        width: 275px;
+        
+        p {
+            font-size: 0.9rem;
+            margin: 1.2%;
+        }
     }
 }
 
 @media (min-width: 855px) and (max-width: 1280px) {
-    .game {
-        gap: 25px;
-    }
-
     .dice-container {
-        gap: 15px;
+        gap: 10px;
+        .dice {
+            img {
+                width: 100px;  
+                height: 100px;
+            }
+        }
     }
 
     .buttons-container {

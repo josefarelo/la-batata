@@ -1,0 +1,104 @@
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 220px;
+    height: 205px;
+    border: 4px solid rgb(254, 99, 71);
+    border-radius: 15px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    background-color: rgb(247, 241, 233);
+    font-size: 1rem;
+    font-weight: 600;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 50px;
+    
+    .dropdown-menu {
+        list-style: none;
+        padding: 0;
+        text-align: start;
+
+        .menu-links {
+            border: 1px solid #00000059;
+            border-radius: 5px;
+            background-color: rgb(254, 99, 71);
+            padding: 10px;
+            margin: 15px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(253, 81, 51);
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+            }
+            
+            &:active {
+                transform: scale(0.98);
+            }
+        }
+    }
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 320px) {
+    .menu {
+        width: 110px;
+        height: 105px;
+        margin: 30px;
+        .dropdown-menu {
+            font-size: 0.7rem;
+            .menu-links {
+                padding: 4px;
+                margin: 4px;
+            }
+        }
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .menu {
+        width: 180px;
+        height: 150px;
+        margin: 50px;
+        .dropdown-menu {
+            font-size: 1rem;
+            .menu-links {
+                padding: 8px;
+                margin: 8px;
+            }
+        }
+    }
+}
+
+@media (min-width: 481px) and (max-width: 854px) {
+    .menu {
+        width: 130px;
+        height: 110px;
+        margin: 20px;
+        .dropdown-menu {
+            font-size: 0.7rem;
+            .menu-links {
+                padding: 5px;
+                margin: 7px;
+            }
+        }
+    }
+}
+
+@media (min-width: 855px) and (max-width: 1280px) {
+    .menu {
+        width: 175px;
+        height: 150px;
+        margin: 30px;
+        .dropdown-menu {
+            font-size: 0.85rem;
+            .menu-links {
+                padding: 7px;
+                margin: 10px;
+            }
+        }
+    }
+}

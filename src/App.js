@@ -13,7 +13,9 @@ function App() {
         height={100}
         alt="la batata logo"
       />
-      <Game />
+      <div className='game-container'>
+        <Game />
+      </div>
     </div>
   );
 }

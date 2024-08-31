@@ -48,3 +48,80 @@
 }
 
 
+/* Responsive Design */
+
+@media (max-width: 320px) {
+    .modal-content {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 150px;
+        height: 160px;
+        margin-top: 80px;
+
+        h2 {
+            font-size: 1rem;
+        }
+        
+        input {
+            padding: 2px;
+            height: 9px;
+        }
+        
+        button {
+            width: 100px;
+            height: 36px;
+        }
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .modal-content {
+        h2 {
+            font-size: 1.1rem;
+        }
+        
+        input {
+            padding: 2px;
+            font-size: 6px;
+            width: 25px;
+        }
+        
+        button {
+            padding: 3px 8px;
+            margin-left: 2px;
+            font-size: 5px;
+        }
+    }
+}
+
+@media (min-width: 481px) and (max-width: 854px) {
+    .modal-content {
+        width: 230px;
+        height: 95px;
+
+        h2 {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        input {
+            height: 0.5rem;
+        }
+        
+        button {
+            height: 38px;
+        }
+    }
+}
+
+@media (min-width: 855px) and (max-width: 1280px) {
+    .modal-content {
+        width: 300px;
+        height: 120px;
+
+        h2 {
+            font-size: 1.2rem;
+        }
+    }
+}
