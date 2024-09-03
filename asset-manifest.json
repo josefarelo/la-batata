@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/la-batata/static/css/main.cf503184.css",
-    "main.js": "/la-batata/static/js/main.203d7aba.js",
+    "main.css": "/la-batata/static/css/main.bc391cd1.css",
+    "main.js": "/la-batata/static/js/main.9abc0469.js",
     "static/media/la-batata.png": "/la-batata/static/media/la-batata.a962d7d32383eba85cc3.png",
     "static/media/dice6.png": "/la-batata/static/media/dice6.8a19535770bc3e5d6d69.png",
     "static/media/dice3.png": "/la-batata/static/media/dice3.558f3e6dc76cac6f36b2.png",
@@ -10,11 +10,11 @@
     "static/media/dice2.png": "/la-batata/static/media/dice2.47e282d2220ef7bcb34c.png",
     "static/media/dice1.png": "/la-batata/static/media/dice1.ef299b885b4bbafb1403.png",
     "index.html": "/la-batata/index.html",
-    "main.cf503184.css.map": "/la-batata/static/css/main.cf503184.css.map",
-    "main.203d7aba.js.map": "/la-batata/static/js/main.203d7aba.js.map"
+    "main.bc391cd1.css.map": "/la-batata/static/css/main.bc391cd1.css.map",
+    "main.9abc0469.js.map": "/la-batata/static/js/main.9abc0469.js.map"
   },
   "entrypoints": [
-    "static/css/main.cf503184.css",
-    "static/js/main.203d7aba.js"
+    "static/css/main.bc391cd1.css",
+    "static/js/main.9abc0469.js"
   ]
 }
