@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Dice from './Dice';
 import Modal from './Modal';
-import Menu from './Menu';
+import HamburgerMenu from './HamburgerMenu';
 import '../styles/Game.scss';
 
 const Game = () => {
@@ -840,7 +840,7 @@ const Game = () => {
             />
             {!isModalOpen && (
                 <div className='game-container'>
-                    <Menu />
+                    <HamburgerMenu />
                     <div className="dice-container">
                         {diceValues.map((value, index) => (
                             <Dice key={index} number={value} />
