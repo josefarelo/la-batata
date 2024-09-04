@@ -755,10 +755,12 @@ const Game = () => {
         // Actualización de puntajes y cambio de turno
         if (playerInGame[currentPlayerIndex]) {
             if (currentPlayerIndex === currentScoreIndex && !maximumPointsSupperpassed && !pure) { // Actualiza los puntos si no sobrepasa el límite de puntuación
-                if (fortuneBatataOn[currentPlayerIndex] && fortuneBatataCounter[currentPlayerIndex] === 2) { // Actualiza el puntaje si se activo Batata de la fortuna
+                if (fortuneBatataOn[currentPlayerIndex] && fortuneBatataCounter[currentPlayerIndex] === 3) { // Actualiza el puntaje si se activo Batata de la fortuna
                     const newTotalScore = [...totalScore];
+                    console.log("totalScore: " + totalScore[currentPlayerIndex]);
                     newTotalScore[currentScoreIndex] += (turnScore*2);
                     setTotalScore(newTotalScore);
+                    console.log("newTotalScore: " + totalScore[currentPlayerIndex]);
                 } else { // Actualiza de forma normal el puntaje del jugador
                     const newTotalScore = [...totalScore];
                     newTotalScore[currentScoreIndex] += turnScore;
