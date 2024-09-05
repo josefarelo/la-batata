@@ -842,7 +842,7 @@ const Game = () => {
             />
             {!isModalOpen && (
                 <div className='game-container'>
-                    <HamburgerMenu />
+                    <HamburgerMenu players={players} totalScore={totalScore} />
                     <div className="dice-container">
                         {diceValues.map((value, index) => (
                             <Dice key={index} number={value} />

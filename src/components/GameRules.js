@@ -2,9 +2,12 @@ import React from 'react';
 import '../styles/GameRules.scss';
 
 const GameRules = () => {
+    const handleClick = (e) => {
+        e.stopPropagation(); // Evita que el click se propague y cierre el menú.
+    };
 
     return (
-        <div className='game-rules'>
+        <div className='game-rules' onClick={handleClick}>
             <h2>Cómo jugar:</h2>
             <ul>
                 <li>Cada jugador tirará los 6 dados y sumará los puntos obtenidos en esa ronda.</li>

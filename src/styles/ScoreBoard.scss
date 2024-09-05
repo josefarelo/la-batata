@@ -1,12 +1,79 @@
 .scoreboard {
-    margin-top: 20px;
+    table {
+        position: absolute;
+        padding: 15px;
+        border: 4px solid rgb(254, 99, 71);
+        border-radius: 15px;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+        background-color: rgb(247, 241, 233);
+        left: 1550px;
+        top: 0;
+        z-index: 50;
+    
+        th, td {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 8px;
+            text-align: center;
+        }
+    
+        th {
+            background-color: #f3f2f2;
+        }
+    
+        tbody tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+    }
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+
+/* Responsive Design */
+
+@media (max-width: 320px) {
+    .scoreboard {
+        table {
+            padding: 6px;
+            left: 150px;
+            font-size: 0.5rem;
+    
+            th, td {
+                padding: 4px;
+            }
+        }
+    }
 }
 
-li {
-    margin: 5px 0;
+@media (min-width: 321px) and (max-width: 480px) {
+    .scoreboard {
+        table {
+            padding: 10px;
+            left: 200px;
+            font-size: 0.8rem;
+        }
+    }
+}
+
+@media (min-width: 481px) and (max-width: 854px) {
+    .scoreboard {
+        table {
+            padding: 7px;
+            left: 655px;
+            font-size: 0.57rem;
+    
+            th, td {
+                padding: 5px;
+            }
+        }
+    }
+}
+
+@media (min-width: 855px) and (max-width: 1280px) {
+    .scoreboard {
+        table {
+            padding: 10px;
+            left: 1000px;
+            font-size: 0.8rem;
+        }
+    }
 }
