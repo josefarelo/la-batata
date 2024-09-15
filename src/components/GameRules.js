@@ -27,7 +27,7 @@ const GameRules = () => {
             <ul>
                 <li><strong>Batata de la Fortuna:</strong> El jugador perderá sus dos próximos turnos, pero cuando vuelva a jugar, la puntuación obtenida valdrá el doble. Esta función es válida hasta que el jugador llegue a los 5000 puntos y se deberá esperar dos turnos más para volver a utilizarla.</li>
                 <li><strong>Batatear:</strong> Se lanzarán los dados y sus caras se girarán al reverso. (1 a 6, 2 a 5, 3 a 4, 4 a 3, 5 a 2, 6 a 1). Esta función puede utilizarse una vez por turno.</li>
-                <li><strong>Batatazo:</strong> El jugador elegirá a otro participante en juego, lanzará los dados y el puntaje obtenido se restará del puntaje del jugador elegido. Esta función es válida para jugadores con más de 5000 puntos y solo puede usarse una vez cada dos turnos.</li>
+                <li><strong>Batatazo:</strong> El jugador elegirá a otro participante en juego que supere los 5000 puntos, lanzará los dados y el puntaje obtenido se restará del puntaje del jugador elegido. Esta función es válida para jugadores con más de 5000 puntos y solo puede usarse una vez cada 4 turnos.</li>
             </ul>
 
             <h3>Función especial del juego:</h3>

@@ -1,0 +1,111 @@
+.objetive-selection-container {
+    position: absolute;
+    padding: 15px;
+    border: 4px solid rgb(254, 99, 71);
+    border-radius: 15px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    background-color: rgb(247, 241, 233);
+    left: 70px;
+    top: 300px;
+    z-index: 60;
+
+    th {
+        padding-bottom: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .player-objetive-button {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 2px;
+        text-align: center;
+        background-color: #f7f7f7e1;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #fdebe0;
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+        }
+            
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 320px) {
+    .objetive-selection-container {
+        padding: 5px;
+        left: 22px;
+        top: 137px;
+
+        th {
+            font-size: 0.7rem;
+        }
+
+        .player-objetive-button {
+            font-size: 0.5rem;
+            padding: 7px;
+            margin: 0;
+        }
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .objetive-selection-container {
+        padding: 8px;
+        left: 45px;
+        top: 230px;
+
+        th {
+            font-size: 0.9rem;
+        }
+
+        .player-objetive-button {
+            font-size: 0.75rem;
+            padding: 10px;
+        }
+    }
+}
+
+@media (min-width: 481px) and (max-width: 854px) {
+    .objetive-selection-container {
+        padding: 5px;
+        left: 27px;
+        top: 148px;
+
+        th {
+            font-size: 0.7rem;
+        }
+
+        .player-objetive-button {
+            font-size: 0.55rem;
+            padding: 6px;
+            margin: 0;
+        }
+    }
+}
+
+@media (min-width: 855px) and (max-width: 1280px) {
+    .objetive-selection-container {
+        padding: 10px;
+        left: 41px;
+        top: 205px;
+
+        th {
+            font-size: 0.9rem;
+        }
+
+        .player-objetive-button {
+            font-size: 0.75rem;
+
+        }
+    }
+}

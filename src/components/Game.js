@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Dice from './Dice';
 import Modal from './Modal';
 import HamburgerMenu from './HamburgerMenu';
+import ObjectiveSelection from './TargetSelection';
 import '../styles/Game.scss';
 
 const Game = () => {
@@ -30,8 +31,15 @@ const Game = () => {
     const [canBatatear, setCanBatatear] = useState(false);
     const [fortuneBatataOn, setFortuneBatataOn] = useState([]);
     const [fortuneBatataCounter, setFortuneBatataCounter] = useState([]);
+    const [canUseBatatazo, setCanUseBatatazo] = useState(false);
+    const [batatazoOn, setBatatazoOn] = useState([]);
+    const [batatazoCooldown, setBatatazoCooldown] = useState([]);
+    const [showTargets, setShowTargets] = useState(false);
+    const [possibleTargets, setPossibleTargets] = useState([]);
+    const [target, setTarget] = useState();
 
     const currentPlayer = players[currentPlayerIndex];
+    
 
     const isOdd = number => number % 2 !== 0;
     
@@ -46,12 +54,18 @@ const Game = () => {
     };
 
     useEffect(() => { // Condiciones por puntaje del jugador (Ingreso al juego, Ganar, Límite para funciones especiales...)
-
-        // Crear "Batata de la fortuna"
+        // Establecer longitud de "Batata de la fortuna"
         if (fortuneBatataOn.length === 0) {
             const updateFortuneBatata = [...playerInGame];
             setFortuneBatataOn(updateFortuneBatata);
             setFortuneBatataCounter(Array.from({ length: updateFortuneBatata.length }, () => 0));
+        }
+
+        // Establecer longitud de "Batatazo"
+        if (batatazoOn.length === 0) {
+            const updateBatatazo = [...playerInGame];
+            setBatatazoOn(updateBatatazo);
+            setBatatazoCooldown(Array.from({ length: updateBatatazo.length }, () => 0));
         }
 
         // Entrada al "Juego"
@@ -110,7 +124,6 @@ const Game = () => {
             if (playerInGame.every(player => player) && currentPlayer[0]){
                 setRoundCounter(prevRoundCounter => prevRoundCounter + 1);
             }
-            console.log("Ronda = " + roundCounter);
             setTurnCounter(0);
         }
 
@@ -133,6 +146,31 @@ const Game = () => {
             setRoundCounter(0);
         }
     }, [roundCounter]);
+
+    useEffect(() => { // Condiciones para usar Batatazo
+        if (!canUseBatatazo) {
+            let playersCounter = 0;
+            for (let i = 0; i < playerInGame.length; i++) {
+                if (playerInGame[i] && !playerMidGame[i]) {
+                    playersCounter += 1;
+                }
+            }
+            if (playersCounter > 1) {
+                setCanUseBatatazo(true);
+            }
+        }
+
+        setPossibleTargets([]); // Limpiar los posibles objetivos
+        if (canUseBatatazo) {
+            let updateTargets = [];
+            for (let i = 0; i < players.length; ++i ) {
+                if (playerInGame[i] && !playerMidGame[i]) {
+                    updateTargets.push(players[i]);
+                }
+            }
+            setPossibleTargets(updateTargets);
+        }
+    }, [playerInGame, playerMidGame]);
 
     const rollDice = () => { // Tirar los dados
 
@@ -744,7 +782,6 @@ const Game = () => {
             if (batatearOn) {
                 setCanBatatear(false);
                 setBatatearON(false);
-                console.log("Batatear OFF");
             }
             setRoll(roll + 1); // Contador de tiradas
         }
@@ -755,12 +792,25 @@ const Game = () => {
         // Actualización de puntajes y cambio de turno
         if (playerInGame[currentPlayerIndex]) {
             if (currentPlayerIndex === currentScoreIndex && !maximumPointsSupperpassed && !pure) { // Actualiza los puntos si no sobrepasa el límite de puntuación
-                if (fortuneBatataOn[currentPlayerIndex] && fortuneBatataCounter[currentPlayerIndex] === 3) { // Actualiza el puntaje si se activo Batata de la fortuna
+                if (fortuneBatataOn[currentPlayerIndex] && fortuneBatataCounter[currentPlayerIndex] === 3) { // Actualiza el puntaje si se utilizó Batata de la fortuna
                     const newTotalScore = [...totalScore];
                     console.log("totalScore: " + totalScore[currentPlayerIndex]);
                     newTotalScore[currentScoreIndex] += (turnScore*2);
                     setTotalScore(newTotalScore);
                     console.log("newTotalScore: " + totalScore[currentPlayerIndex]);
+                } else if (batatazoOn[currentPlayerIndex]) { // Actualiza el puntaje si se utilizó Batatazo
+                    const newTotalScore = [...totalScore];
+                    if (newTotalScore[target] - turnScore <= 700) {
+                        newTotalScore[target] = 700;
+                        setTotalScore(newTotalScore);
+                    } else {
+                        newTotalScore[target] -= turnScore;
+                        setTotalScore(newTotalScore);
+                    }
+                    // Finaliza Batatazo para el jugador que utilizó la función
+                    const updateBatatazo = [...batatazoOn];
+                    updateBatatazo[currentPlayerIndex] = false;
+                    setBatatazoOn(updateBatatazo);
                 } else { // Actualiza de forma normal el puntaje del jugador
                     const newTotalScore = [...totalScore];
                     newTotalScore[currentScoreIndex] += turnScore;
@@ -795,6 +845,13 @@ const Game = () => {
             updateFortuneBatataCounter[currentPlayerIndex] = 0;
             setFortuneBatataCounter(updateFortuneBatataCounter);
         }
+        // Actualizar contador de espera de Batatazo
+        if (batatazoCooldown[currentPlayerIndex] > 0) {
+            const updatePlayerBatatazoCooldown = [...batatazoCooldown];
+            updatePlayerBatatazoCooldown[currentPlayerIndex] -= 1;
+            setBatatazoCooldown(updatePlayerBatatazoCooldown);
+            console.log(`Batatazo cooldown: ${batatazoCooldown[currentPlayerIndex]}`);
+        }
 
         setTurnCounter(prevTurnCounter => prevTurnCounter + 1);
         setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
@@ -811,11 +868,10 @@ const Game = () => {
     const batatear = () => { // Función especial Batatear
         if (canBatatear) {
             setBatatearON(true);
-            console.log("Batatear ON");
         }
     };
 
-    const batataDeLaFortuna = () => { // Función especial batata de la fortuna
+    const batataDeLaFortuna = () => { // Función especial Batata de la fortuna
         if (playerMidGame[currentPlayerIndex] && fortuneBatataCounter[currentPlayerIndex] === 0) {
             const updateFortuneBatata = [...fortuneBatataOn];
             updateFortuneBatata[currentPlayerIndex] = true;
@@ -827,12 +883,35 @@ const Game = () => {
             alert(players[currentPlayerIndex] + " debes esperar " + (6 - fortuneBatataCounter[currentPlayerIndex]) + " turno/s para volver a utilizar la Batata de la fortuna!");
         }
     };
-    
 
-    const batatazo = () => { // Función especial batatazo
-        //codigo
+    const batatazo = () => { // Función especial Batatazo
+        if (playerInGame[currentPlayerIndex] && !playerMidGame[currentPlayerIndex] && batatazoCooldown[currentPlayerIndex] === 0) {
+            const updateBatatazo = [...batatazoOn];
+            updateBatatazo[currentPlayerIndex] = true;
+            setBatatazoOn(updateBatatazo);
+            alert("El " + players[currentPlayerIndex] + " se prepara para tirar una batata!");
+            setShowTargets(true);
+        }
+        if (batatazoCooldown[currentPlayerIndex] > 0) {
+            alert(`${players[currentPlayerIndex]} debe esperar ${batatazoCooldown[currentPlayerIndex]} turnos para volver a usar el Batatazo.`);
+        }
     };
-    
+
+    const handleCloseTargets = (player) => { // Función para cerrar el panel de selección de objetivos de Batatazo
+        console.log("batatazoOn: " + batatazoOn);
+        for (let i = 0; i < players.length; ++i) {
+            if (players[i] === player) {
+                setTarget(i);
+                // Aplica los turnos de espera para que el jugador vuelva a utilizar Batatazo
+                const updatePlayerBatatazoCooldown = [...batatazoCooldown];
+                updatePlayerBatatazoCooldown[currentPlayerIndex] = 5;
+                setBatatazoCooldown(updatePlayerBatatazoCooldown);
+                break;
+            }
+        }
+        setShowTargets(false);
+    };
+
     return (
         <div className="game">
             <Modal 
@@ -842,6 +921,13 @@ const Game = () => {
             />
             {!isModalOpen && (
                 <div className='game-container'>
+                    {showTargets && (
+                        <ObjectiveSelection 
+                            possibleTargets={possibleTargets} 
+                            showTargets={showTargets} 
+                            onPlayerClick={handleCloseTargets}
+                        />
+                    )}
                     <HamburgerMenu players={players} totalScore={totalScore} />
                     <div className="dice-container">
                         {diceValues.map((value, index) => (
@@ -878,7 +964,7 @@ const Game = () => {
                             </button>
                             <button className="batatazo" 
                                 onClick={batatazo}
-                                //disabled={gameOver || forcedThrow || maximumPointsSupperpassed || pure}
+                                disabled={gameOver || forcedThrow || maximumPointsSupperpassed || pure || !canUseBatatazo}
                             >
                                 Batatazo
                             </button>

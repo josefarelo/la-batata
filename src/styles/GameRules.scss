@@ -14,6 +14,7 @@
     padding: 20px;
     overflow: auto;
     z-index: 100;
+    cursor: default;
 
     &::-webkit-scrollbar {
         width: 10px;
