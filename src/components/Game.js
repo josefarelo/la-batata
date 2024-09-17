@@ -905,13 +905,13 @@ const Game = () => {
     };
 
     const handleCloseTargets = (player) => { // Función para cerrar el panel de selección de objetivos de Batatazo
-        console.log("batatazoOn: " + batatazoOn);
         for (let i = 0; i < players.length; ++i) {
             if (players[i] === player) {
                 setTarget(i);
+                alert(`El ${players[currentPlayerIndex]} le tiró un batatazo al ${players[i]}.`);
                 // Aplica los turnos de espera para que el jugador vuelva a utilizar Batatazo
                 const updatePlayerBatatazoCooldown = [...batatazoCooldown];
-                updatePlayerBatatazoCooldown[currentPlayerIndex] = 2; //! cambiar a 5 despues
+                updatePlayerBatatazoCooldown[currentPlayerIndex] = 5;
                 setBatatazoCooldown(updatePlayerBatatazoCooldown);
                 break;
             }
