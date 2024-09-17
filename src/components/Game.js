@@ -39,7 +39,6 @@ const Game = () => {
     const [target, setTarget] = useState();
 
     const currentPlayer = players[currentPlayerIndex];
-    
 
     const isOdd = number => number % 2 !== 0;
     
@@ -94,7 +93,10 @@ const Game = () => {
         }
 
         // Límite para funciones especiales
-        if (playerInGame[currentPlayerIndex] && totalScore[currentPlayerIndex] < 5000) {
+        if (playerMidGame.length === 0) {
+            setPlayerMidGame(Array(players.length).fill(false)); 
+        }
+        if (playerInGame[currentPlayerIndex] && totalScore[currentPlayerIndex] <= 5000) {
             const updatePlayerMidGame = [...playerMidGame];
             updatePlayerMidGame[currentPlayerIndex] = true;
             setPlayerMidGame(updatePlayerMidGame);
@@ -110,7 +112,7 @@ const Game = () => {
             setRollCondition(updateRollCondition);
             alert(players[currentPlayerIndex] + " debes esperar " + (3 - fortuneBatataCounter[currentPlayerIndex]) + " turno/s para poder lanzar los dados!");
         }
-    }, [turnScore, totalScore[currentPlayerIndex]]);
+    }, [turnScore, totalScore, currentPlayerIndex]);
 
     useEffect(() => { // Actualizar cantidad de rondas y habilitar "Batatear"
         // Activar contador de turnos
@@ -148,7 +150,7 @@ const Game = () => {
     }, [roundCounter]);
 
     useEffect(() => { // Condiciones para usar Batatazo
-        if (!canUseBatatazo) {
+        if (!canUseBatatazo || canUseBatatazo) {
             let playersCounter = 0;
             for (let i = 0; i < playerInGame.length; i++) {
                 if (playerInGame[i] && !playerMidGame[i]) {
@@ -157,7 +159,10 @@ const Game = () => {
             }
             if (playersCounter > 1) {
                 setCanUseBatatazo(true);
+            } else if (playersCounter <= 1) {
+                setCanUseBatatazo(false);
             }
+            console.log("playerCounter: " + playersCounter);
         }
 
         setPossibleTargets([]); // Limpiar los posibles objetivos
@@ -863,6 +868,8 @@ const Game = () => {
         setMaximumPointsSupperpassed(false);
         setUpdateNumberOfDice(6);
         setPure(false);
+
+        console.log(`playerMidGame: ${playerMidGame}`);
     }
 
     const batatear = () => { // Función especial Batatear
@@ -904,7 +911,7 @@ const Game = () => {
                 setTarget(i);
                 // Aplica los turnos de espera para que el jugador vuelva a utilizar Batatazo
                 const updatePlayerBatatazoCooldown = [...batatazoCooldown];
-                updatePlayerBatatazoCooldown[currentPlayerIndex] = 5;
+                updatePlayerBatatazoCooldown[currentPlayerIndex] = 2; //! cambiar a 5 despues
                 setBatatazoCooldown(updatePlayerBatatazoCooldown);
                 break;
             }
